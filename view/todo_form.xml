@@ -1,0 +1,43 @@
+<?xml version="1.0"?>
+<!-- This file is part of log_action module.
+The COPYRIGHT file at the top level of this repository contains
+the full copyright notices and license terms. -->
+<form>
+    <group col="6" colspan="4" id="header">
+        <label name="name"/>
+        <field name="name" colspan="3"/>
+        <label name="parent"/>
+        <field name="parent"/>
+        <label name="date"/>
+        <field name="date" widget="date"/>
+        <label name="limit_date"/>
+        <field name="limit_date" widget="date"/>
+        <label name="finish_date"/>
+        <field name="finish_date" widget="date"/>
+        <newline/>
+    </group>
+    <notebook colspan="4">
+        <page string="Description" id="description">
+            <field name="description" colspan="4"/>
+
+            <group col="4" colspan="4" id="states" yfill="1">
+                <group col="2" colspan="2" id="state" yfill="1">
+                    <label name="state"/>
+                    <field name="state"/>
+                </group>
+                <group col="-1" colspan="2" id="buttons">
+                    <button name="open" string="Open"/>
+                    <button name="done" string="Done"/>
+                </group>
+            </group>
+
+        </page>
+        <page string="Other" id="other">
+            <label name="user"/>
+            <field name="user"/>
+            <label name="sequence"/>
+            <field name="sequence"/>
+            <field name="childs" colspan="4"/>
+        </page>
+    </notebook>
+</form>

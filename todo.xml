@@ -1,0 +1,206 @@
+<?xml version="1.0"?>
+<!-- This file is part of todo module.
+The COPYRIGHT file at the top level of this repository contains
+the full copyright notices and license terms. -->
+<tryton>
+    <data>
+        <!-- Todo Model -->
+
+        <record model="ir.ui.icon" id="todo_icon">
+            <field name="name">todo-icon</field>
+            <field name="path">icons/todo.svg</field>
+        </record>
+
+
+        <!-- views -->
+
+        <record model="ir.ui.view" id="todo_view_tree">
+            <field name="model">todo.todo</field>
+            <field name="type">tree</field>
+            <field name="priority" eval="20"/>
+            <field name="field_childs">childs</field>
+            <field name="name">todo_tree</field>
+        </record>
+        <record model="ir.ui.view" id="todo_view_list">
+            <field name="model">todo.todo</field>
+            <field name="type">tree</field>
+            <field name="priority" eval="10"/>
+            <field name="name">todo_list</field>
+        </record>
+        <record model="ir.ui.view" id="todo_view_form">
+            <field name="model">todo.todo</field>
+            <field name="type">form</field>
+            <field name="name">todo_form</field>
+        </record>
+
+
+        <!-- Action tree per user -->
+
+        <record model="ir.action.act_window" id="act_todo_tree">
+            <field name="name">TODOs</field>
+            <field name="res_model">todo.todo</field>
+            <field name="domain"
+                eval="[('parent', '=', None), ('create_uid', '=', Eval('_user'))]"
+                pyson="1"/>
+        </record>
+        <record model="ir.action.act_window.view" id="act_todo_tree_view1">
+            <field name="sequence" eval="10"/>
+            <field name="view" ref="todo_view_tree"/>
+            <field name="act_window" ref="act_todo_tree"/>
+        </record>
+        <record model="ir.action.act_window.view" id="act_todo_tree_view2">
+            <field name="sequence" eval="20"/>
+            <field name="view" ref="todo_view_form"/>
+            <field name="act_window" ref="act_todo_tree"/>
+        </record>
+
+        <menuitem id="menu_todo"
+            action="act_todo_tree" icon="todo-icon"
+            sequence="10"/> <!-- Just after Dashboard, if exists -->
+
+
+        <!-- Action list / form per user -->
+
+        <record model="ir.action.act_window" id="act_todo_form">
+            <field name="name">TODO list</field>
+            <field name="res_model">todo.todo</field>
+            <field name="search_value"></field>
+            <field name="domain"
+                eval="[('create_uid', '=', Eval('_user'))]"
+                pyson="1"/>
+        </record>
+
+        <record model="ir.action.act_window.view"
+                id="act_todo_form_view1">
+            <field name="sequence" eval="10"/>
+            <field name="view" ref="todo_view_list"/>
+            <field name="act_window" ref="act_todo_form"/>
+        </record>
+        <record model="ir.action.act_window.view"
+                id="act_todo_form_view2">
+            <field name="sequence" eval="20"/>
+            <field name="view" ref="todo_view_form"/>
+            <field name="act_window" ref="act_todo_form"/>
+        </record>
+
+        <record model="ir.action.act_window.domain" id="act_todo_form_domain_open">
+            <field name="name">Open</field>
+            <field name="sequence" eval="10"/>
+            <field name="domain"
+                eval="[('state', '=', 'open')]"
+                pyson="1"/>
+            <field name="count" eval="True"/>
+            <field name="act_window" ref="act_todo_form"/>
+        </record>
+        <record model="ir.action.act_window.domain" id="act_todo_form_domain_done">
+            <field name="name">Done</field>
+            <field name="sequence" eval="20"/>
+            <field name="domain"
+                eval="[('state', '=', 'done')]"
+                pyson="1"/>
+            <field name="act_window" ref="act_todo_form"/>
+        </record>
+
+        <menuitem parent="menu_todo"
+            id="menu_todo_todo"
+            action="act_todo_form"
+            sequence="0"/>
+
+
+        <!-- Action list / form for admin (show all) -->
+
+        <record model="ir.action.act_window" id="act_todo_all">
+            <field name="name">TODO All</field>
+            <field name="res_model">todo.todo</field>
+            <field name="search_value"></field>
+        </record>
+
+        <record model="ir.action.act_window.view"
+                id="act_todo_all_view1">
+            <field name="sequence" eval="10"/>
+            <field name="view" ref="todo_view_list"/>
+            <field name="act_window" ref="act_todo_all"/>
+        </record>
+        <record model="ir.action.act_window.view"
+                id="act_todo_all_view2">
+            <field name="sequence" eval="20"/>
+            <field name="view" ref="todo_view_form"/>
+            <field name="act_window" ref="act_todo_all"/>
+        </record>
+
+        <menuitem parent="menu_todo"
+            id="menu_todo_all"
+            action="act_todo_all"
+            sequence="0"/>
+
+        <record model="ir.ui.menu-res.group" id="menu_todo_all_admin">
+            <field name="menu" ref="menu_todo_all"/>
+            <field name="group" ref="res.group_admin"/>
+        </record>
+
+
+        <!-- Action for Dashboard -->
+
+        <record model="ir.action.act_window" id="act_todo_dashboard_tree">
+            <field name="name">TODO tree</field>
+            <field name="res_model">todo.todo</field>
+            <field name="domain"
+                eval="[('parent', '=', None), ('create_uid', '=', Eval('_user')), ('state', '!=', 'done')]"
+                pyson="1"/>
+            <field name="usage">dashboard</field>
+        </record>
+        <record model="ir.action.act_window.view" id="act_todo_dashboard_tree_view1">
+            <field name="sequence" eval="10"/>
+            <field name="view" ref="todo_view_tree"/>
+            <field name="act_window" ref="act_todo_dashboard_tree"/>
+        </record>
+        <record model="ir.action.act_window.view" id="act_todo_dashboard_tree_view2">
+            <field name="sequence" eval="20"/>
+            <field name="view" ref="todo_view_form"/>
+            <field name="act_window" ref="act_todo_dashboard_tree"/>
+        </record>
+
+        <record model="ir.action.act_window" id="act_todo_dashboard_list">
+            <field name="name">TODO list</field>
+            <field name="res_model">todo.todo</field>
+            <field name="search_value"></field>
+            <field name="domain"
+                eval="[('create_uid', '=', Eval('_user')), ('state', '!=', 'done')]"
+                pyson="1"/>
+            <field name="usage">dashboard</field>
+        </record>
+
+        <record model="ir.action.act_window.view"
+                id="act_todo_dashboard_list_view1">
+            <field name="sequence" eval="10"/>
+            <field name="view" ref="todo_view_list"/>
+            <field name="act_window" ref="act_todo_dashboard_list"/>
+        </record>
+        <record model="ir.action.act_window.view"
+                id="act_todo_dashboard_list_view2">
+            <field name="sequence" eval="20"/>
+            <field name="view" ref="todo_view_form"/>
+            <field name="act_window" ref="act_todo_dashboard_list"/>
+        </record>
+
+
+        <record model="ir.model.access" id="access_todo">
+            <field name="model" search="[('model', '=', 'todo.todo')]"/>
+            <field name="perm_read" eval="True"/>
+            <field name="perm_write" eval="True"/>
+            <field name="perm_create" eval="True"/>
+            <field name="perm_delete" eval="True"/>
+        </record>
+
+
+        <record model="ir.model.button" id="todo_open_button">
+            <field name="name">open</field>
+            <field name="model" search="[('model', '=', 'todo.todo')]"/>
+        </record>
+
+        <record model="ir.model.button" id="todo_done_button">
+            <field name="name">done</field>
+            <field name="model" search="[('model', '=', 'todo.todo')]"/>
+        </record>
+    </data>
+</tryton>
