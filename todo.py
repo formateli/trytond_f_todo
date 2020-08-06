@@ -1,11 +1,14 @@
 # This file is part of todo module.
 # The COPYRIGHT file at the top level of this repository
 # contains the full copyright notices and license terms.
+from trytond.pool import Pool
+from trytond.transaction import Transaction
 from trytond.model import (
         Workflow, ModelView, ModelSQL,
         fields, sequence_ordered, tree)
 from trytond.pyson import Eval, In, Equal, If, Bool, And
 import datetime
+from pytz import timezone
 
 __all__ = ['Todo']
 
@@ -74,9 +77,9 @@ class Todo(Workflow, ModelSQL, ModelView,
         return [
             ('/tree/field[@name="name"]',
                 'visual', If(Eval('limit_state', 0) > 0,
-                            If(Eval('limit_state', 0) == 1,
-                                'warning',
-                                'danger'),
+                            If(Eval('limit_state', 0) > 1,
+                                'danger',
+                                'warning'),
                             '')
             ),
             ]
@@ -86,12 +89,22 @@ class Todo(Workflow, ModelSQL, ModelView,
         return 'open'
 
     def get_limit_state(self, name):
+        pool = Pool()
+        Company = pool.get('company.company')
+        timezone_str = None
         res = 0
         if self.limit_date:
-            date = self.limit_date.date()
-            curr_date = datetime.datetime.now().date()
+            company_id = Transaction().context.get('company')
+            if company_id:
+                timezone_str = Company(company_id).timezone
+
+            date = self.limit_date.astimezone(timezone(timezone_str))
+            curr_date = datetime.datetime.now(timezone(timezone_str))
+
+            date = date.date()
+            curr_date = curr_date.date()
             if date == curr_date:
-                 res = 1  # Warning
+                res = 1  # Warning
             elif date < curr_date:
                 res = 2  # Danger
         return res
