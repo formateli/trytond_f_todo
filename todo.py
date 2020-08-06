@@ -7,6 +7,8 @@ from trytond.model import (
         Workflow, ModelView, ModelSQL,
         fields, sequence_ordered, tree)
 from trytond.pyson import Eval, In, Equal, If, Bool, And
+from trytond.i18n import gettext
+from trytond.exceptions import UserError
 import datetime
 from pytz import timezone
 
@@ -23,7 +25,7 @@ _STATES = {
 
 
 class Todo(Workflow, ModelSQL, ModelView,
-           sequence_ordered(), tree(separator='\\')):
+           sequence_ordered(), tree(separator=' / ')):
     'Todo'
     __name__ = 'todo.todo'
     name = fields.Char('Name', required=True,
@@ -41,9 +43,14 @@ class Todo(Workflow, ModelSQL, ModelView,
             }, depends=['state'])
     user = fields.Function(fields.Many2One('res.user', 'User'), 'get_user')
     parent = fields.Many2One('todo.todo', 'Parent', select=True,
-        states=_STATES, depends=['state'])
+        domain=[
+            ('create_uid', '=', Eval('create_uid'))
+        ],
+        states=_STATES, depends=['state', 'create_uid'])
     childs = fields.One2Many('todo.todo', 'parent', string='Childs',
         states=_STATES, depends=['state'])
+    childs_open = fields.One2Many('todo.todo', 'parent', string='Childs Open',
+        states=_STATES, depends=['state'], filter=[('state', '=', 'open')])
     description = fields.Text('Description',
         states=_STATES, depends=['state'])
     state = fields.Selection(STATES, 'State', readonly=True, required=True)
@@ -75,12 +82,13 @@ class Todo(Workflow, ModelSQL, ModelView,
     @classmethod
     def view_attributes(cls):
         return [
-            ('/tree/field[@name="name"]',
-                'visual', If(Eval('limit_state', 0) > 0,
-                            If(Eval('limit_state', 0) > 1,
-                                'danger',
-                                'warning'),
-                            '')
+            ('/tree/field[@name="name"]', 'visual',
+                If(And(Eval('limit_state', 0) > 0,
+                       Eval('state', '') == 'open'),
+                    If(Eval('limit_state', 0) > 1,
+                        'danger',
+                        'warning'),
+                    '')
             ),
             ]
 
@@ -118,6 +126,14 @@ class Todo(Workflow, ModelSQL, ModelView,
     @classmethod
     def search_date(cls, name, clause):
         return [('create_date',) + tuple(clause[1:])]
+
+    @classmethod
+    def validate(cls, todos):
+        for todo in todos:
+            if todo.limit_date and todo.limit_date < todo.date:
+                raise UserError(
+                    gettext('todo.msg_invalid_limit_date',
+                        name=todo.rec_name))
 
     @classmethod
     @ModelView.button

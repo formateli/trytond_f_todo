@@ -1,0 +1,11 @@
+<?xml version="1.0"?>
+<!-- This file is part of todo module.
+The COPYRIGHT file at the top level of this repository contains
+the full copyright notices and license terms. -->
+<tryton>
+    <data>
+        <record model="ir.message" id="msg_invalid_limit_date">
+            <field name="text">Invalid limit day for "%(name)s" todo.</field>
+        </record>
+    </data>
+</tryton>
