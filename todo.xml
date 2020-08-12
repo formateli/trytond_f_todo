@@ -175,7 +175,7 @@ the full copyright notices and license terms. -->
             <field name="res_model">todo.todo</field>
             <field name="search_value"></field>
             <field name="domain"
-                eval="[('create_uid', '=', Eval('_user')), ('state', '!=', 'done')]"
+                eval="[('childs', '=', None), ('create_uid', '=', Eval('_user')), ('state', '!=', 'done')]"
                 pyson="1"/>
             <field name="usage">dashboard</field>
         </record>
