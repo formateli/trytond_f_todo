@@ -152,7 +152,7 @@ class Todo(Workflow, ModelSQL, ModelView,
             to_done.append(todo)
             if todo.childs:
                 if not done_childs:
-                    msg_id = 'todo_done_childs'
+                    msg_id = 'todo_done_childs_' + str(todo.id)
                     if Warning.check(msg_id):
                         raise UserWarning(
                             msg_id,
