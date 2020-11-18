@@ -1,0 +1,121 @@
+#
+msgid ""
+msgstr "Content-Type: text/plain; charset=utf-8\n"
+
+msgctxt "field:todo.todo,childs:"
+msgid "Childs"
+msgstr "Hijos"
+
+msgctxt "field:todo.todo,childs_open:"
+msgid "Childs Open"
+msgstr "Hijos abiertos"
+
+msgctxt "field:todo.todo,date:"
+msgid "Date"
+msgstr "Fecha"
+
+msgctxt "field:todo.todo,description:"
+msgid "Description"
+msgstr "Descripción"
+
+msgctxt "field:todo.todo,finish_date:"
+msgid "Finish Date"
+msgstr "Fecha Finalizado"
+
+msgctxt "field:todo.todo,limit_date:"
+msgid "Limit Date"
+msgstr "Fecha Limite"
+
+msgctxt "field:todo.todo,limit_state:"
+msgid "Limit state"
+msgstr "Estado Limite"
+
+msgctxt "field:todo.todo,name:"
+msgid "Name"
+msgstr "Nombre"
+
+msgctxt "field:todo.todo,parent:"
+msgid "Parent"
+msgstr "Padre"
+
+msgctxt "field:todo.todo,state:"
+msgid "State"
+msgstr "Estado"
+
+msgctxt "field:todo.todo,user:"
+msgid "User"
+msgstr "Usuario"
+
+msgctxt "model:ir.action,name:act_todo_all"
+msgid "TODO All"
+msgstr "TODO Todos"
+
+msgctxt "model:ir.action,name:act_todo_dashboard_list"
+msgid "TODO list"
+msgstr "TODO lista"
+
+msgctxt "model:ir.action,name:act_todo_dashboard_tree"
+msgid "TODO tree"
+msgstr "TODO árbol"
+
+msgctxt "model:ir.action,name:act_todo_form"
+msgid "TODO list"
+msgstr "TODO lista"
+
+msgctxt "model:ir.action,name:act_todo_tree"
+msgid "TODOs"
+msgstr "TODOs"
+
+msgctxt "model:ir.action.act_window.domain,name:act_todo_form_domain_done"
+msgid "Done"
+msgstr "Realizado"
+
+msgctxt "model:ir.action.act_window.domain,name:act_todo_form_domain_open"
+msgid "Open"
+msgstr "Abierto"
+
+msgctxt "model:ir.ui.menu,name:menu_todo"
+msgid "TODOs"
+msgstr "TODOs"
+
+msgctxt "model:ir.ui.menu,name:menu_todo_all"
+msgid "TODO All"
+msgstr "TODO Todos"
+
+msgctxt "model:ir.ui.menu,name:menu_todo_todo"
+msgid "TODO list"
+msgstr "TODO lista"
+
+msgctxt "model:todo.todo,name:"
+msgid "Todo"
+msgstr "Todo"
+
+msgctxt "selection:todo.todo,state:"
+msgid "Done"
+msgstr "Realizado"
+
+msgctxt "selection:todo.todo,state:"
+msgid "Open"
+msgstr "Abierto"
+
+msgctxt "view:todo.todo:"
+msgid "Description"
+msgstr "Descripción"
+
+msgctxt "view:todo.todo:"
+msgid "Done"
+msgstr "Realizar"
+
+msgctxt "view:todo.todo:"
+msgid "Open"
+msgstr "Abrir"
+
+msgctxt "view:todo.todo:"
+msgid "Other"
+msgstr "Otro"
+
+msgctxt "model:ir.message,text:msg_todo_done_childs"
+msgid ""
+"TODO \"%(todo)s\" has childs. All its childs will be finished."
+msgstr ""
+"TODO \"%(todo)s\" tiene hijos. Todos sus hijos serán realizados."
